@@ -18,9 +18,10 @@ void cleanup() {
     }
     
     // Close semaphores
-    if (mutex != SEM_FAILED) sem_close(mutex);
-    if (empty != SEM_FAILED) sem_close(empty);
-    if (full != SEM_FAILED) sem_close(full);
+    if (mutex && mutex != SEM_FAILED) sem_close(mutex);
+    if (empty && empty != SEM_FAILED) sem_close(empty);
+    if (full && full != SEM_FAILED) sem_close(full);
+
 }
 
 void signal_handler(int sig) {
