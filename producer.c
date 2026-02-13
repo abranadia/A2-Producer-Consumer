@@ -17,10 +17,10 @@ void cleanup() {
         shmdt(buffer);
     }
     
-    // Close semaphores (don't unlink - other processes may be using)
-    if (mutex != SEM_FAILED) sem_close(mutex);
-    if (empty != SEM_FAILED) sem_close(empty);
-    if (full != SEM_FAILED) sem_close(full);
+    // Close semaphores 
+    if (mutex && mutex != SEM_FAILED) sem_close(mutex);
+    if (empty && empty != SEM_FAILED) sem_close(empty);
+    if (full  && full  != SEM_FAILED) sem_close(full);
 }
 
 void signal_handler(int sig) {
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
     int created = 0;
     shm_id = shmget(SHM_KEY, sizeof(shared_buffer_t), IPC_CREAT | IPC_EXCL | 0666);
     if (shm_id == -1) {
-        // Already exists - just get it
+        // Already exists - get it
         shm_id = shmget(SHM_KEY, sizeof(shared_buffer_t), 0666);
         if (shm_id == -1) {
             perror("Producer: shmget");
@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
         buffer->tail = 0;
         buffer->count = 0;
 
-        // Clean up old named semaphores from a previous run (if any)
+        // Clean up old-named semaphores from a previous run (if any)
         sem_unlink(SEM_MUTEX);
         sem_unlink(SEM_EMPTY);
         sem_unlink(SEM_FULL);
