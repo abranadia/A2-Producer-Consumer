@@ -9,7 +9,7 @@
 #define _DEFAULT_SOURCE
 #endif
 
-// ===== Required includes for both producer and consumer =====
+//  Required includes for both producer and consumer 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
